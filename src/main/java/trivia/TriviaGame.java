@@ -1,41 +1,31 @@
 package trivia;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TriviaGame implements IGame {
 
-    private static final int BOARD_SPOTS = 12;
     private static final int MAX_PLAYERS = 4;
-    private static final int COINS_TO_WIN = 6;
+    private static final int COINS_TO_WIN_THE_GAME = 6;
+    private static final int BOARD_SPOTS = 12;
 
-    private final Questions questions = new Questions();
-    private final List<Player> players = new ArrayList<>();
+    private final Questions questions;
+    private final Players players;
+    private final PenaltyBox penaltyBox;
 
-    private final PenaltyBox penaltyBox = new PenaltyBox();
-
-    private Player currentPlayer;
-
+    public TriviaGame() {
+        questions = new Questions();
+        players = new Players(MAX_PLAYERS, COINS_TO_WIN_THE_GAME);
+        penaltyBox = new PenaltyBox();
+    }
 
     @Override
     public void enrollPlayer(String name) {
-        if (players.size() == MAX_PLAYERS) {
-            throw new IllegalStateException("The maximum allowed number of players is " + MAX_PLAYERS + ".");
-        }
-        players.add(new Player(name));
+        int no = players.add(new Player(name));
         System.out.println(name + " was added");
-        System.out.println("He / She is player number " + players.size());
-
-        if (currentPlayer == null) {
-            currentPlayer = players.get(0);
-        }
+        System.out.println("He / She is player number " + no);
     }
 
     @Override
     public void playTurn(int die) {
-        if (players.isEmpty()) {
-            throw new IllegalStateException("No players have enrolled yet.");
-        }
+        final Player currentPlayer = players.currentPlayer();
 
         System.out.println(currentPlayer.name() + " is the current player");
         System.out.println("He / She has rolled a " + die);
@@ -60,31 +50,26 @@ public class TriviaGame implements IGame {
     @Override
     public boolean onCorrectAnswer() {
         System.out.println("Answer was correct!!!!");
+        final Player currentPlayer = players.currentPlayer();
         currentPlayer.collectCoin();
         System.out.println(currentPlayer.name() + " now has " + currentPlayer.coins() + " Gold Coins.");
 
-        if (currentPlayer.coins() == COINS_TO_WIN) {
+        if (players.hasWinner()) {
             return false;
         }
-        nextPlayer();
+        players.nextPlayer();
         return true;
     }
 
     @Override
     public boolean onWrongAnswer() {
+        final Player currentPlayer = players.currentPlayer();
+
         System.out.println("Question was incorrectly answered");
         System.out.println(currentPlayer.name() + " was sent to the penalty box");
         penaltyBox.lock(currentPlayer);
 
-        nextPlayer();
+        players.nextPlayer();
         return true;
-    }
-
-    private void nextPlayer() {
-        int index = players.indexOf(currentPlayer) + 1;
-        if (index == players.size()) {
-            index = 0;
-        }
-        currentPlayer = players.get(index);
     }
 }

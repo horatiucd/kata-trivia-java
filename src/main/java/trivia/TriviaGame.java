@@ -5,8 +5,9 @@ import java.util.List;
 
 public class TriviaGame implements IGame {
 
+    private static final int BOARD_SPOTS = 12;
+    private static final int MAX_PLAYERS = 4;
     private static final int TO_WIN = 6;
-    private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
 
     private final Questions questions;
     private final List<Player> players;
@@ -21,51 +22,72 @@ public class TriviaGame implements IGame {
     }
 
     @Override
-    public void addPlayer(String name) {
+    public void enrollPlayer(String name) {
+        if (players.size() == MAX_PLAYERS) {
+            throw new IllegalStateException("The maximum allowed number of players is " + MAX_PLAYERS + ".");
+        }
+
         players.add(new Player(name));
         System.out.println(name + " was added");
         System.out.println("He / She is player number " + players.size());
     }
 
     @Override
-    public void movePlayer(int positions) {
+    public void playTurn(int die) {
         Player player = currentPlayer();
 
         System.out.println(player.getName() + " is the current player");
-        System.out.println("He / She has rolled a " + positions);
+        System.out.println("He / She has rolled a " + die);
 
         if (player.isInPenaltyBox()) {
-            if (positions % 2 != 0) {
-                System.out.println(player.getName() + " is getting out of the penalty box");
-                isGettingOutOfPenaltyBox = true;
-            } else {
+            if (isNotLucky(die)) {
                 System.out.println(player.getName() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
                 return;
             }
+            System.out.println(player.getName() + " is getting out of the penalty box");
+            isGettingOutOfPenaltyBox = true;
         }
 
-        player.move(positions, TOTAL_NUMBER_OF_POSITIONS);
-        player.showStatus();
-        askQuestion();
+        player.move(die, BOARD_SPOTS);
+        question();
+    }
+
+    private static boolean isNotLucky(int die) {
+        return die % 2 == 0;
+    }
+
+    private void question() {
+        System.out.println(questions.popQuestion(Category.atIndex(currentPlayer().getPosition())));
     }
 
     @Override
-    public boolean wasCorrectlyAnswered() {
+    public boolean onCorrectAnswer() {
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
-                return correctAnswer();
+                return answerWasCorrect();
             } else {
                 nextPlayer();
                 return true;
             }
         } else {
-            return correctAnswer();
+            return answerWasCorrect();
         }
     }
 
+    private boolean answerWasCorrect() {
+        Player player = currentPlayer();
+
+        System.out.println("Answer was correct!!!!");
+        player.collectCoin();
+        System.out.println(player.getName() + " now has " + player.getCoins() + " Gold Coins.");
+
+        nextPlayer();
+        return !player.ownsCoins(TO_WIN);
+    }
+
     @Override
-    public boolean wrongAnswer() {
+    public boolean onWrongAnswer() {
         Player player = currentPlayer();
         System.out.println("Question was incorrectly answered");
         System.out.println(player.getName() + " was sent to the penalty box");
@@ -73,10 +95,6 @@ public class TriviaGame implements IGame {
 
         nextPlayer();
         return true;
-    }
-
-    private void askQuestion() {
-        System.out.println(questions.popQuestion(Category.atIndex(currentPlayer().getPosition())));
     }
 
     private Player currentPlayer() {
@@ -88,16 +106,5 @@ public class TriviaGame implements IGame {
         if (currentPlayerIndex == players.size()) {
             currentPlayerIndex = 0;
         }
-    }
-
-    private boolean correctAnswer() {
-        Player player = currentPlayer();
-
-        System.out.println("Answer was correct!!!!");
-        player.collectCoin();
-        System.out.println(player.getName() + " now has " + player.getCoins() + " Gold Coins.");
-
-        nextPlayer();
-        return !player.ownsCoins(TO_WIN);
     }
 }

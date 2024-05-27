@@ -36,7 +36,7 @@ public class Game implements IGame {
     return (howManyPlayers() >= 2);
   }
 
-  public void addPlayer(String name) {
+  public void enrollPlayer(String name) {
 
 
     players.add(name);
@@ -52,16 +52,16 @@ public class Game implements IGame {
     return players.size();
   }
 
-  public void movePlayer(int positions) {
+  public void playTurn(int die) {
     System.out.println(players.get(currentPlayer) + " is the current player");
-    System.out.println("He / She has rolled a " + positions);
+    System.out.println("He / She has rolled a " + die);
 
     if (inPenaltyBox[currentPlayer]) {
-      if (positions % 2 != 0) {
+      if (die % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
 
         System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-        places[currentPlayer] = places[currentPlayer] + positions;
+        places[currentPlayer] = places[currentPlayer] + die;
         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
         System.out.println(players.get(currentPlayer)
@@ -76,7 +76,7 @@ public class Game implements IGame {
 
     } else {
 
-      places[currentPlayer] = places[currentPlayer] + positions;
+      places[currentPlayer] = places[currentPlayer] + die;
       if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
       System.out.println(players.get(currentPlayer)
@@ -113,7 +113,7 @@ public class Game implements IGame {
     return "ROCK";
   }
 
-  public boolean wasCorrectlyAnswered() {
+  public boolean onCorrectAnswer() {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
         System.out.println("Answer was correct!!!!");
@@ -154,7 +154,7 @@ public class Game implements IGame {
     }
   }
 
-  public boolean wrongAnswer() {
+  public boolean onWrongAnswer() {
     System.out.println("Question was incorrectly answered");
     System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
     inPenaltyBox[currentPlayer] = true;

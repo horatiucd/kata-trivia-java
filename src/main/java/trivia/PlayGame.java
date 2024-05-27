@@ -22,7 +22,7 @@ public class PlayGame {
       for (int i = 1; i <= playerCount; i++) {
          System.out.print("Player "+i+" name: ");
          String playerName = scanner.nextLine();
-         aGame.addPlayer(playerName);
+         aGame.enrollPlayer(playerName);
       }
 
       System.out.println("\n\n--Starting game--");
@@ -31,14 +31,14 @@ public class PlayGame {
       boolean notAWinner;
       do {
          int roll = readRoll();
-         aGame.movePlayer(roll);
+         aGame.playTurn(roll);
 
          System.out.print(">> Was the answer correct? [y/n] ");
          boolean correct = readYesNo();
          if (correct) {
-            notAWinner = aGame.wasCorrectlyAnswered();
+            notAWinner = aGame.onCorrectAnswer();
          } else {
-            notAWinner = aGame.wrongAnswer();
+            notAWinner = aGame.onWrongAnswer();
          }
 
       } while (notAWinner);

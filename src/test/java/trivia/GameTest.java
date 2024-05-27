@@ -43,18 +43,18 @@ public class GameTest {
 			// WARNING: System.out.println() doesn't work in this try {} as the system out is captured and recorded in memory
 			System.setOut(inMemory);
 
-			aGame.addPlayer("Chet");
-			aGame.addPlayer("Pat");
-			aGame.addPlayer("Sue");
+			aGame.enrollPlayer("Chet");
+			aGame.enrollPlayer("Pat");
+			aGame.enrollPlayer("Sue");
 
 			boolean notAWinner;
 			do {
-				aGame.movePlayer(rand.nextInt(5) + 1);
+				aGame.playTurn(rand.nextInt(5) + 1);
 
 				if (rand.nextInt(9) == 7) {
-					notAWinner = aGame.wrongAnswer();
+					notAWinner = aGame.onWrongAnswer();
 				} else {
-					notAWinner = aGame.wasCorrectlyAnswered();
+					notAWinner = aGame.onCorrectAnswer();
 				}
 
 			} while (notAWinner);

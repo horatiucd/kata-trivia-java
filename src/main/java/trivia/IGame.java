@@ -2,12 +2,12 @@ package trivia;
 
 public interface IGame {
 
-	void addPlayer(String name);
+	void enrollPlayer(String name);
 
-	void movePlayer(int positions);
+	void playTurn(int die);
 
-	boolean wasCorrectlyAnswered();
+	boolean onCorrectAnswer();
 
-	boolean wrongAnswer();
+	boolean onWrongAnswer();
 
 }

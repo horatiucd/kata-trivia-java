@@ -25,6 +25,9 @@ public class Player {
         if (position > maxPositions - 1) {
             position -= maxPositions;
         }
+
+        System.out.println(name + "'s new location is " + position);
+        System.out.println("The category is " + Category.atIndex(position));
     }
 
     public int getCoins() {
@@ -41,11 +44,6 @@ public class Player {
 
     public void setInPenaltyBox(boolean inPenaltyBox) {
         this.inPenaltyBox = inPenaltyBox;
-    }
-
-    public void showStatus() {
-        System.out.println(name + "'s new location is " + position);
-        System.out.println("The category is " + Category.atIndex(position));
     }
 
     public boolean ownsCoins(int coins) {

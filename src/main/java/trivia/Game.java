@@ -45,7 +45,7 @@ public class Game implements IGame {
     inPenaltyBox[howManyPlayers()] = false;
 
     System.out.println(name + " was added");
-    System.out.println("They are player number " + players.size());
+    System.out.println("He / She is player number " + players.size());
   }
 
   public int howManyPlayers() {
@@ -54,7 +54,7 @@ public class Game implements IGame {
 
   public void roll(int roll) {
     System.out.println(players.get(currentPlayer) + " is the current player");
-    System.out.println("They have rolled a " + roll);
+    System.out.println("He / She has rolled a " + roll);
 
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {

@@ -7,14 +7,12 @@ public class TriviaGame implements IGame {
 
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
 
-    private final List<Player> players;
     private final Questions questions;
+    private final List<Player> players;
 
     private boolean isGettingOutOfPenaltyBox;
 
     private int currentPlayerIndex;
-    // @Transient (JPA) / transient (keyword Java) marcheaza un camp NE-MAPAT IN BAZA
-    // temporary field code smell. il mai intalnesti ca campuri @Transient/transient
 //    private Player currentPlayer; // = players.get(currentPlayerIndex); = redudanta
 
     public TriviaGame() {
@@ -26,23 +24,20 @@ public class TriviaGame implements IGame {
     public void addPlayer(String name) {
         players.add(new Player(name));
         System.out.println(name + " was added");
-        System.out.println("They are player number " + players.size());
+        System.out.println("He / She is player number " + players.size());
     }
 
     @Override
     public void roll(int roll) {
         System.out.println(currentPlayer().getName() + " is the current player");
-        System.out.println("They have rolled a " + roll);
+        System.out.println("He / She has rolled a " + roll);
 
         if (currentPlayer().isInPenaltyBox()) {
             if (roll % 2 != 0) {
+                System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
                 isGettingOutOfPenaltyBox = true;
-
-                System.out.println(currentPlayer().getName() + " is getting out of the " +
-                        "penalty box");
             } else {
-                System.out.println(currentPlayer().getName() + " is not " +
-                        "getting out of the penalty box");
+                System.out.println(currentPlayer().getName() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
                 return;
             }
@@ -78,9 +73,7 @@ public class TriviaGame implements IGame {
     }
 
     private void showStatusOfCurrentPlayer() {
-        System.out.println(currentPlayer().getName()
-                + "'s new location is "
-                + currentPlayer().getPosition());
+        System.out.println(currentPlayer().getName() + "'s new location is " + currentPlayer().getPosition());
         System.out.println("The category is " + Category.atIndex(currentPlayer().getPosition()));
     }
 
@@ -102,10 +95,7 @@ public class TriviaGame implements IGame {
     private boolean correctAnswer() {
         System.out.println("Answer was correct!!!!");
         currentPlayer().addCoin();
-        System.out.println(currentPlayer().getName()
-                + " now has "
-                + currentPlayer().getCoins()
-                + " Gold Coins.");
+        System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getCoins() + " Gold Coins.");
 
         boolean winner = currentPlayer().getCoins() != 6;
         nextPlayer();

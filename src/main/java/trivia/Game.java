@@ -61,6 +61,7 @@ public class Game implements IGame {
         isGettingOutOfPenaltyBox = true;
 
         System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+        inPenaltyBox[currentPlayer] = false;  // added this line to fix the bug
         places[currentPlayer] = places[currentPlayer] + die;
         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
@@ -114,31 +115,6 @@ public class Game implements IGame {
   }
 
   public boolean onCorrectAnswer() {
-    if (inPenaltyBox[currentPlayer]) {
-      if (isGettingOutOfPenaltyBox) {
-        System.out.println("Answer was correct!!!!");
-        purses[currentPlayer]++;
-        System.out.println(players.get(currentPlayer)
-                           + " now has "
-                           + purses[currentPlayer]
-                           + " Gold Coins.");
-
-        boolean winner = didPlayerWin();
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
-
-//        inPenaltyBox[currentPlayer] = false;
-
-        return winner;
-      } else {
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
-        return true;
-      }
-
-
-    } else {
-
       System.out.println("Answer was correct!!!!");
       purses[currentPlayer]++;
       System.out.println(players.get(currentPlayer)
@@ -151,7 +127,6 @@ public class Game implements IGame {
       if (currentPlayer == players.size()) currentPlayer = 0;
 
       return winner;
-    }
   }
 
   public boolean onWrongAnswer() {

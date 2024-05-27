@@ -13,7 +13,7 @@ public class TriviaGame implements IGame {
     private final List<Player> players = new ArrayList<>();
 
     private Player currentPlayer;
-    private int currentDie;
+
 
     @Override
     public void enrollPlayer(String name) {
@@ -35,25 +35,24 @@ public class TriviaGame implements IGame {
             throw new IllegalStateException("No players have enrolled yet.");
         }
 
-        currentDie = die;
-
         System.out.println(currentPlayer.getName() + " is the current player");
-        System.out.println("He / She has rolled a " + currentDie);
+        System.out.println("He / She has rolled a " + die);
 
         if (currentPlayer.isInPenaltyBox()) {
-            if (!isReleaseDie()) {
+            if (!isReleaseDie(die)) {
                 System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
                 return;
             }
             System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
+            currentPlayer.setInPenaltyBox(false);
         }
 
-        currentPlayer.move(currentDie, BOARD_SPOTS);
+        currentPlayer.move(die, BOARD_SPOTS);
         question();
     }
 
-    private boolean isReleaseDie() {
-        return currentDie % 2 != 0;
+    private static boolean isReleaseDie(int die) {
+        return die % 2 != 0;
     }
 
     private void question() {
@@ -64,18 +63,6 @@ public class TriviaGame implements IGame {
 
     @Override
     public boolean onCorrectAnswer() {
-        if (currentPlayer.isInPenaltyBox()) {
-            if (isReleaseDie()) {
-                return answerWasCorrect();
-            } else {
-                nextPlayer();
-                return true;
-            }
-        }
-        return answerWasCorrect();
-    }
-
-    private boolean answerWasCorrect() {
         System.out.println("Answer was correct!!!!");
         currentPlayer.collectCoin();
 
@@ -102,6 +89,5 @@ public class TriviaGame implements IGame {
             index = 0;
         }
         currentPlayer = players.get(index);
-        currentDie = 0;
     }
 }

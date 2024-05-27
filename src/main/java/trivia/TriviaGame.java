@@ -12,6 +12,8 @@ public class TriviaGame implements IGame {
     private final Questions questions = new Questions();
     private final List<Player> players = new ArrayList<>();
 
+    private final PenaltyBox penaltyBox = new PenaltyBox();
+
     private Player currentPlayer;
 
 
@@ -39,7 +41,7 @@ public class TriviaGame implements IGame {
         System.out.println("He / She has rolled a " + die);
 
         if (currentPlayer.isInPenaltyBox()) {
-            if (!isReleaseDie(die)) {
+            if (!penaltyBox.isRelease(die)) {
                 System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
                 return;
             }
@@ -49,10 +51,6 @@ public class TriviaGame implements IGame {
 
         currentPlayer.move(die, BOARD_SPOTS);
         question();
-    }
-
-    private static boolean isReleaseDie(int die) {
-        return die % 2 != 0;
     }
 
     private void question() {

@@ -3,9 +3,10 @@ package trivia;
 public class Player {
 
     private final String name;
+
     private int position;
     private int coins;
-    private boolean isInPenaltyBox;
+    private boolean inPenaltyBox;
 
     public Player(String name) {
         this.name = name;
@@ -31,11 +32,11 @@ public class Player {
     }
 
     public boolean isInPenaltyBox() {
-        return isInPenaltyBox;
+        return inPenaltyBox;
     }
 
     public void setInPenaltyBox(boolean inPenaltyBox) {
-        isInPenaltyBox = inPenaltyBox;
+        this.inPenaltyBox = inPenaltyBox;
     }
 
     void addCoin() {

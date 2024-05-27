@@ -12,7 +12,7 @@ public class TriviaGame implements IGame {
     private final Questions questions;
     private final List<Player> players;
 
-    private boolean isGettingOutOfPenaltyBox;
+    private boolean isReleasableDie;
 
     private int currentPlayerIndex;
 
@@ -40,21 +40,21 @@ public class TriviaGame implements IGame {
         System.out.println("He / She has rolled a " + die);
 
         if (player.isInPenaltyBox()) {
-            if (isNotLucky(die)) {
+            isReleasableDie = isReleasable(die);
+            if (isReleasableDie) {
+                System.out.println(player.getName() + " is getting out of the penalty box");
+            } else {
                 System.out.println(player.getName() + " is not getting out of the penalty box");
-                isGettingOutOfPenaltyBox = false;
                 return;
             }
-            System.out.println(player.getName() + " is getting out of the penalty box");
-            isGettingOutOfPenaltyBox = true;
         }
 
         player.move(die, BOARD_SPOTS);
         question();
     }
 
-    private static boolean isNotLucky(int die) {
-        return die % 2 == 0;
+    private static boolean isReleasable(int die) {
+        return die % 2 != 0;
     }
 
     private void question() {
@@ -64,7 +64,7 @@ public class TriviaGame implements IGame {
     @Override
     public boolean onCorrectAnswer() {
         if (currentPlayer().isInPenaltyBox()) {
-            if (isGettingOutOfPenaltyBox) {
+            if (isReleasableDie) {
                 return answerWasCorrect();
             } else {
                 nextPlayer();

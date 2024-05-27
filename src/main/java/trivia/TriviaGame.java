@@ -31,7 +31,7 @@ public class TriviaGame implements IGame {
         System.out.println(currentPlayer().getName() + " is the current player");
         System.out.println("He / She has rolled a " + positions);
 
-        if (currentPlayer().isInJail()) {
+        if (currentPlayer().isInPenaltyBox()) {
             if (positions % 2 != 0) {
                 System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
                 isGettingOutOfPenaltyBox = true;
@@ -49,7 +49,7 @@ public class TriviaGame implements IGame {
 
     @Override
     public boolean wasCorrectlyAnswered() {
-        if (currentPlayer().isInJail()) {
+        if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 return correctAnswer();
             } else {
@@ -65,7 +65,7 @@ public class TriviaGame implements IGame {
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(currentPlayer().getName() + " was sent to the penalty box");
-        currentPlayer().setInJail(true);
+        currentPlayer().setInPenaltyBox(true);
 
         nextPlayer();
         return true;

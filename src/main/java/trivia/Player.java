@@ -6,7 +6,7 @@ public class Player {
 
     private int position;
     private int coins;
-    private boolean inJail;
+    private boolean inPenaltyBox;
 
     public Player(String name) {
         this.name = name;
@@ -35,11 +35,11 @@ public class Player {
         coins++;
     }
 
-    public boolean isInJail() {
-        return inJail;
+    public boolean isInPenaltyBox() {
+        return inPenaltyBox;
     }
 
-    public void setInJail(boolean inJail) {
-        this.inJail = inJail;
+    public void setInPenaltyBox(boolean inPenaltyBox) {
+        this.inPenaltyBox = inPenaltyBox;
     }
 }

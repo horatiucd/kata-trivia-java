@@ -69,7 +69,7 @@ public class GameBetter implements IGame {
     }
 
     private void askQuestion() {
-        System.out.println(questions.getQuestion(currentCategory()));
+        System.out.println(questions.popQuestion(currentCategory()));
     }
 
 
@@ -130,6 +130,6 @@ public class GameBetter implements IGame {
 
 
     private boolean didPlayerWin() {
-        return !(currentPlayer().getCoins() == 6);
+        return currentPlayer().getCoins() != 6;
     }
 }

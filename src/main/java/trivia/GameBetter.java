@@ -22,10 +22,6 @@ public class GameBetter implements IGame {
         return players.get(currentPlayerIndex);
     }
 
-    public boolean isPlayable() {
-        return (howManyPlayers() >= 2);
-    }
-
     public boolean add(String playerName) {
         players.add(new Player(playerName));
         System.out.println(playerName + " was added");

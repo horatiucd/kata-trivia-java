@@ -2,10 +2,10 @@ package trivia;
 
 public enum Category {
 
-    RED,
-    BLUE,
-    GREEN,
-    GREY;
+    POP,
+    SCIENCE,
+    SPORTS,
+    ROCK;
 
     public static Category getCategory(int index) {
         var categories = Category.values();

@@ -24,7 +24,7 @@ public class TriviaGame implements IGame {
     }
 
     @Override
-    public void playTurn(int die) {
+    public boolean playTurn(int die) {
         final Player currentPlayer = players.currentPlayer();
 
         System.out.println(currentPlayer.name() + " is the current player");
@@ -33,7 +33,7 @@ public class TriviaGame implements IGame {
         if (penaltyBox.has(currentPlayer)) {
             if (!penaltyBox.isRelease(die)) {
                 System.out.println(currentPlayer.name() + " is not getting out of the penalty box");
-                return;
+                return false;
             }
             System.out.println(currentPlayer.name() + " is getting out of the penalty box");
             penaltyBox.release(currentPlayer);
@@ -45,6 +45,7 @@ public class TriviaGame implements IGame {
         Category category = Category.getCategory(currentPlayer.position());
         System.out.println("The category is " + category);
         System.out.println(questions.popFor(category));
+        return true;
     }
 
     @Override

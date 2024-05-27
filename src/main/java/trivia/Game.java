@@ -52,7 +52,7 @@ public class Game implements IGame {
     return players.size();
   }
 
-  public void playTurn(int die) {
+  public boolean playTurn(int die) {
     System.out.println(players.get(currentPlayer) + " is the current player");
     System.out.println("He / She has rolled a " + die);
 
@@ -70,9 +70,11 @@ public class Game implements IGame {
                            + places[currentPlayer]);
         System.out.println("The category is " + currentCategory());
         askQuestion();
+        return true;
       } else {
         System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
         isGettingOutOfPenaltyBox = false;
+        return false;
       }
 
     } else {
@@ -85,6 +87,7 @@ public class Game implements IGame {
                          + places[currentPlayer]);
       System.out.println("The category is " + currentCategory());
       askQuestion();
+      return true;
     }
 
   }

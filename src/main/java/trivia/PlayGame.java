@@ -28,19 +28,20 @@ public class PlayGame {
       System.out.println("\n\n--Starting game--");
 
 
-      boolean notAWinner;
+      boolean notAWinner = true;
       do {
          int roll = readRoll();
-         aGame.playTurn(roll);
+         boolean ask = aGame.playTurn(roll);
 
-         System.out.print(">> Was the answer correct? [y/n] ");
-         boolean correct = readYesNo();
-         if (correct) {
-            notAWinner = aGame.onCorrectAnswer();
-         } else {
-            notAWinner = aGame.onWrongAnswer();
+         if (ask) {
+            System.out.print(">> Was the answer correct? [y/n] ");
+            boolean correct = readYesNo();
+            if (correct) {
+               notAWinner = aGame.onCorrectAnswer();
+            } else {
+               notAWinner = aGame.onWrongAnswer();
+            }
          }
-
       } while (notAWinner);
       System.out.println(">> Game won!");
    }

@@ -27,7 +27,7 @@ public final class Questions {
                 "Complete the lyric: \"It's been __ all along!\"",
                 "How are Erik Killmonger and T'Challa related?"
         );
-        byCategory.put(Category.RED, new LinkedList<>(categ1));
+        byCategory.put(Category.POP, new LinkedList<>(categ1));
 
         List<String> categ2 = List.of(
                 "What is the real name of the villain Red Skull?",
@@ -46,7 +46,7 @@ public final class Questions {
                 "Natasha remarks to Clint that the Battle of New York is a lot like what in The Avengers?",
                 "What is Valkyrie's scrapper number in Thor: Ragnarok?"
         );
-        byCategory.put(Category.BLUE, new LinkedList<>(categ2));
+        byCategory.put(Category.SCIENCE, new LinkedList<>(categ2));
 
         List<String> categ3 = List.of(
                 "Who makes their MCU debut in Thor: Ragnarok (2017)",
@@ -62,9 +62,10 @@ public final class Questions {
                 "Scott hid an old Ant-Man suit underneath a trophy. What did the trophy say?",
                 "Finish this line from Guardians of the Galaxy Vol. 2: \"I'm ___, y'all!\"",
                 "What's Black Widow's actual name?",
-                "Who is Peter Parker's best friend?"
+                "Who is Peter Parker's best friend?",
+                "Who is the firstborn child of Odin?"
         );
-        byCategory.put(Category.GREEN, new LinkedList<>(categ3));
+        byCategory.put(Category.SPORTS, new LinkedList<>(categ3));
 
         List<String> categ4 = List.of(
                 "Hawkeye has how many children?",
@@ -83,7 +84,7 @@ public final class Questions {
                 "What museum has a Captain American exhibit?",
                 "What song plays at the beginning of Iron Man?"
         );
-        byCategory.put(Category.GREY, new LinkedList<>(categ4));
+        byCategory.put(Category.ROCK, new LinkedList<>(categ4));
     }
 
     public String popFor(Category category) {

@@ -4,7 +4,7 @@ public interface IGame {
 
 	void enrollPlayer(String name);
 
-	void playTurn(int die);
+	boolean playTurn(int die);
 
 	boolean onCorrectAnswer();
 

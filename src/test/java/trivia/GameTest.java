@@ -1,7 +1,6 @@
 
 package trivia;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +24,7 @@ public class GameTest {
 		if (printExpected) {
 			System.out.println(expectedOutput);
 		}
-		String actualOutput = extractOutput(new Random(seed), new GameBetter());
+		String actualOutput = extractOutput(new Random(seed), new TriviaGame());
 		assertEquals("Change detected for seed " + seed +
 						 ". To breakpoint through it, run this seed alone using the (ignored) test below",
 			expectedOutput, actualOutput);

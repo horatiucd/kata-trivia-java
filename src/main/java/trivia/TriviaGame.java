@@ -3,8 +3,7 @@ package trivia;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Ultimately, change it to TriviaGame
-public class GameBetter implements IGame {
+public class TriviaGame implements IGame {
 
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
     private static final int NUMBER_OF_CATEGORIES = 4;
@@ -18,10 +17,7 @@ public class GameBetter implements IGame {
     // temporary field code smell. il mai intalnesti ca campuri @Transient/transient
 //    private Player currentPlayer; // = players.get(currentPlayerIndex); = redudanta
 
-    public Player currentPlayer() {
-        return players.get(currentPlayerIndex);
-    }
-
+    @Override
     public boolean add(String playerName) {
         players.add(new Player(playerName));
         System.out.println(playerName + " was added");
@@ -29,10 +25,7 @@ public class GameBetter implements IGame {
         return true;
     }
 
-    public int howManyPlayers() {
-        return players.size();
-    }
-
+    @Override
     public void roll(int roll) {
         System.out.println(currentPlayer().getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
@@ -57,22 +50,7 @@ public class GameBetter implements IGame {
         askQuestion();
     }
 
-    private void showStatusOfCurrentPlayer() {
-        System.out.println(currentPlayer().getName()
-                + "'s new location is "
-                + currentPlayer().getPosition());
-        System.out.println("The category is " + currentCategory());
-    }
-
-    private void askQuestion() {
-        System.out.println(questions.popQuestion(currentCategory()));
-    }
-
-
-    private Category currentCategory() {
-        return Category.values()[currentPlayer().getPosition() % NUMBER_OF_CATEGORIES];
-    }
-
+    @Override
     public boolean wasCorrectlyAnswered() {
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
@@ -86,6 +64,42 @@ public class GameBetter implements IGame {
         }
     }
 
+    @Override
+    public boolean wrongAnswer() {
+        System.out.println("Question was incorrectly answered");
+        System.out.println(currentPlayer().getName() + " was sent to the penalty box");
+        currentPlayer().setInPenaltyBox(true);
+
+        nextPlayer();
+        return true;
+    }
+
+    private void showStatusOfCurrentPlayer() {
+        System.out.println(currentPlayer().getName()
+                + "'s new location is "
+                + currentPlayer().getPosition());
+        System.out.println("The category is " + currentCategory());
+    }
+
+    private void askQuestion() {
+        System.out.println(questions.popQuestion(currentCategory()));
+    }
+
+    private Player currentPlayer() {
+        return players.get(currentPlayerIndex);
+    }
+
+    private void nextPlayer() {
+        currentPlayerIndex++;
+        if (currentPlayerIndex == players.size()) {
+            currentPlayerIndex = 0;
+        }
+    }
+
+    private Category currentCategory() {
+        return Category.values()[currentPlayer().getPosition() % NUMBER_OF_CATEGORIES];
+    }
+
     private boolean correctAnswer() {
         System.out.println("Answer was correct!!!!");
         currentPlayer().addCoin();
@@ -97,19 +111,5 @@ public class GameBetter implements IGame {
         boolean winner = currentPlayer().getCoins() != 6;
         nextPlayer();
         return winner;
-    }
-
-    public boolean wrongAnswer() {
-        System.out.println("Question was incorrectly answered");
-        System.out.println(currentPlayer().getName() + " was sent to the penalty box");
-        currentPlayer().setInPenaltyBox(true);
-
-        nextPlayer();
-        return true;
-    }
-
-    public void nextPlayer() {
-        currentPlayerIndex++;
-        if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
     }
 }

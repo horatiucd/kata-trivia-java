@@ -4,7 +4,7 @@ public interface IGame {
 
 	void addPlayer(String name);
 
-	void roll(int roll);
+	void movePlayer(int positions);
 
 	boolean wasCorrectlyAnswered();
 

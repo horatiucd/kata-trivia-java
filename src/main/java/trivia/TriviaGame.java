@@ -13,7 +13,6 @@ public class TriviaGame implements IGame {
     private boolean isGettingOutOfPenaltyBox;
 
     private int currentPlayerIndex;
-//    private Player currentPlayer; // = players.get(currentPlayerIndex); = redudanta
 
     public TriviaGame() {
         questions = new Questions();
@@ -28,12 +27,12 @@ public class TriviaGame implements IGame {
     }
 
     @Override
-    public void roll(int roll) {
+    public void movePlayer(int positions) {
         System.out.println(currentPlayer().getName() + " is the current player");
-        System.out.println("He / She has rolled a " + roll);
+        System.out.println("He / She has rolled a " + positions);
 
-        if (currentPlayer().isInPenaltyBox()) {
-            if (roll % 2 != 0) {
+        if (currentPlayer().isInJail()) {
+            if (positions % 2 != 0) {
                 System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
                 isGettingOutOfPenaltyBox = true;
             } else {
@@ -43,14 +42,14 @@ public class TriviaGame implements IGame {
             }
         }
 
-        currentPlayer().rollPosition(roll, TOTAL_NUMBER_OF_POSITIONS);
+        currentPlayer().move(positions, TOTAL_NUMBER_OF_POSITIONS);
         showStatusOfCurrentPlayer();
         askQuestion();
     }
 
     @Override
     public boolean wasCorrectlyAnswered() {
-        if (currentPlayer().isInPenaltyBox()) {
+        if (currentPlayer().isInJail()) {
             if (isGettingOutOfPenaltyBox) {
                 return correctAnswer();
             } else {
@@ -66,7 +65,7 @@ public class TriviaGame implements IGame {
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(currentPlayer().getName() + " was sent to the penalty box");
-        currentPlayer().setInPenaltyBox(true);
+        currentPlayer().setInJail(true);
 
         nextPlayer();
         return true;
@@ -94,7 +93,7 @@ public class TriviaGame implements IGame {
 
     private boolean correctAnswer() {
         System.out.println("Answer was correct!!!!");
-        currentPlayer().addCoin();
+        currentPlayer().collectCoin();
         System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getCoins() + " Gold Coins.");
 
         boolean winner = currentPlayer().getCoins() != 6;

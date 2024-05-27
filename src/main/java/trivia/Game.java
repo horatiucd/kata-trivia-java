@@ -52,16 +52,16 @@ public class Game implements IGame {
     return players.size();
   }
 
-  public void roll(int roll) {
+  public void movePlayer(int positions) {
     System.out.println(players.get(currentPlayer) + " is the current player");
-    System.out.println("He / She has rolled a " + roll);
+    System.out.println("He / She has rolled a " + positions);
 
     if (inPenaltyBox[currentPlayer]) {
-      if (roll % 2 != 0) {
+      if (positions % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
 
         System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-        places[currentPlayer] = places[currentPlayer] + roll;
+        places[currentPlayer] = places[currentPlayer] + positions;
         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
         System.out.println(players.get(currentPlayer)
@@ -76,7 +76,7 @@ public class Game implements IGame {
 
     } else {
 
-      places[currentPlayer] = places[currentPlayer] + roll;
+      places[currentPlayer] = places[currentPlayer] + positions;
       if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
       System.out.println(players.get(currentPlayer)

@@ -37,11 +37,10 @@ public class GameTest {
 	}
 
 	private String extractOutput(Random rand, IGame aGame) {
-		PrintStream old = System.out;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (PrintStream inmemory = new PrintStream(baos)) {
-			// WARNING: System.out.println() doesn't work in this try {} as the sysout is captured and recorded in memory.
-			System.setOut(inmemory);
+		try (PrintStream inMemory = new PrintStream(baos)) {
+			// WARNING: System.out.println() doesn't work in this try {} as the system out is captured and recorded in memory
+			System.setOut(inMemory);
 
 			aGame.addPlayer("Chet");
 			aGame.addPlayer("Pat");
@@ -49,7 +48,7 @@ public class GameTest {
 
 			boolean notAWinner;
 			do {
-				aGame.roll(rand.nextInt(5) + 1);
+				aGame.movePlayer(rand.nextInt(5) + 1);
 
 				if (rand.nextInt(9) == 7) {
 					notAWinner = aGame.wrongAnswer();
@@ -59,7 +58,7 @@ public class GameTest {
 
 			} while (notAWinner);
 		} finally {
-			System.setOut(old);
+			System.setOut(System.out);
 		}
 
 		return baos.toString();

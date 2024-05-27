@@ -6,17 +6,10 @@ public class Player {
 
     private int position;
     private int coins;
-    private boolean inPenaltyBox;
+    private boolean inJail;
 
     public Player(String name) {
         this.name = name;
-    }
-
-    public void rollPosition(int roll, int totalNumberOfPositions) {
-        this.position += roll;
-        if (this.position > totalNumberOfPositions - 1) {
-            this.position -= totalNumberOfPositions;
-        }
     }
 
     public String getName() {
@@ -27,19 +20,26 @@ public class Player {
         return position;
     }
 
+    public void move(int positions, int maxPositions) {
+        position += positions;
+        if (position > maxPositions - 1) {
+            position -= maxPositions;
+        }
+    }
+
     public int getCoins() {
         return coins;
     }
 
-    public boolean isInPenaltyBox() {
-        return inPenaltyBox;
-    }
-
-    public void setInPenaltyBox(boolean inPenaltyBox) {
-        this.inPenaltyBox = inPenaltyBox;
-    }
-
-    void addCoin() {
+    void collectCoin() {
         coins++;
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
     }
 }

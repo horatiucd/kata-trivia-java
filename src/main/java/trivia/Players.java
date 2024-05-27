@@ -27,6 +27,9 @@ public final class Players {
         if (playing.size() == maxPlayers) {
             throw new IllegalStateException("At most " + maxPlayers + " can play.");
         }
+        if (playing.contains(player)) {
+            throw new IllegalStateException("Player " + player.name() + " is already playing.");
+        }
         playing.add(player);
 
         if (currentPlayer == null) {

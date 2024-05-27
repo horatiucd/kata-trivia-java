@@ -7,7 +7,7 @@ public enum Category {
     SPORTS,
     ROCK;
 
-    public static Category withIndex(int index) {
+    public static Category getCategory(int index) {
         var categories = Category.values();
         return categories[index % categories.length];
     }

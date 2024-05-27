@@ -2,23 +2,22 @@ package trivia;
 
 import java.util.Objects;
 
-public class Player {
+public final class Player {
 
     private final String name;
 
     private int position;
     private int coins;
-    private boolean inPenaltyBox;
 
     public Player(String name) {
         this.name = name;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public int getPosition() {
+    public int position() {
         return position;
     }
 
@@ -27,26 +26,14 @@ public class Player {
         if (position > maxPositions - 1) {
             position -= maxPositions;
         }
+    }
 
-        System.out.println(name + "'s new location is " + position);
+    public int coins() {
+        return coins;
     }
 
     public void collectCoin() {
         coins++;
-
-        System.out.println(name + " now has " + coins + " Gold Coins.");
-    }
-
-    public boolean isInPenaltyBox() {
-        return inPenaltyBox;
-    }
-
-    public void setInPenaltyBox(boolean inPenaltyBox) {
-        this.inPenaltyBox = inPenaltyBox;
-    }
-
-    public boolean ownsCoins(int coins) {
-        return this.coins == coins;
     }
 
     @Override

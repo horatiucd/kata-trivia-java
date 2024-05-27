@@ -7,7 +7,7 @@ public class TriviaGame implements IGame {
 
     private static final int BOARD_SPOTS = 12;
     private static final int MAX_PLAYERS = 4;
-    private static final int TO_WIN = 6;
+    private static final int COINS_TO_WIN = 6;
 
     private final Questions questions = new Questions();
     private final List<Player> players = new ArrayList<>();
@@ -37,34 +37,33 @@ public class TriviaGame implements IGame {
             throw new IllegalStateException("No players have enrolled yet.");
         }
 
-        System.out.println(currentPlayer.getName() + " is the current player");
+        System.out.println(currentPlayer.name() + " is the current player");
         System.out.println("He / She has rolled a " + die);
 
-        if (currentPlayer.isInPenaltyBox()) {
+        if (penaltyBox.contains(currentPlayer)) {
             if (!penaltyBox.isRelease(die)) {
-                System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
+                System.out.println(currentPlayer.name() + " is not getting out of the penalty box");
                 return;
             }
-            System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
-            currentPlayer.setInPenaltyBox(false);
+            System.out.println(currentPlayer.name() + " is getting out of the penalty box");
+            penaltyBox.release(currentPlayer);
         }
 
         currentPlayer.move(die, BOARD_SPOTS);
-        question();
-    }
+        System.out.println(currentPlayer.name() + "'s new location is " + currentPlayer.position());
 
-    private void question() {
-        Category category = Category.withIndex(currentPlayer.getPosition());
+        Category category = Category.getCategory(currentPlayer.position());
         System.out.println("The category is " + category);
-        System.out.println(questions.popQuestion(category));
+        System.out.println(questions.popFor(category));
     }
 
     @Override
     public boolean onCorrectAnswer() {
         System.out.println("Answer was correct!!!!");
         currentPlayer.collectCoin();
+        System.out.println(currentPlayer.name() + " now has " + currentPlayer.coins() + " Gold Coins.");
 
-        if (currentPlayer.ownsCoins(TO_WIN)) {
+        if (currentPlayer.coins() == COINS_TO_WIN) {
             return false;
         }
         nextPlayer();
@@ -74,8 +73,8 @@ public class TriviaGame implements IGame {
     @Override
     public boolean onWrongAnswer() {
         System.out.println("Question was incorrectly answered");
-        System.out.println(currentPlayer.getName() + " was sent to the penalty box");
-        currentPlayer.setInPenaltyBox(true);
+        System.out.println(currentPlayer.name() + " was sent to the penalty box");
+        penaltyBox.lock(currentPlayer);
 
         nextPlayer();
         return true;

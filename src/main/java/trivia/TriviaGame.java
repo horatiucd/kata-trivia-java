@@ -7,8 +7,9 @@ public class TriviaGame implements IGame {
 
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
 
-    private final List<Player> players = new ArrayList<>();
-    private final Questions questions = new Questions();
+    private final List<Player> players;
+    private final Questions questions;
+
     private boolean isGettingOutOfPenaltyBox;
 
     private int currentPlayerIndex;
@@ -16,12 +17,16 @@ public class TriviaGame implements IGame {
     // temporary field code smell. il mai intalnesti ca campuri @Transient/transient
 //    private Player currentPlayer; // = players.get(currentPlayerIndex); = redudanta
 
+    public TriviaGame() {
+        questions = new Questions();
+        players = new ArrayList<>();
+    }
+
     @Override
-    public boolean add(String playerName) {
-        players.add(new Player(playerName));
-        System.out.println(playerName + " was added");
+    public void addPlayer(String name) {
+        players.add(new Player(name));
+        System.out.println(name + " was added");
         System.out.println("They are player number " + players.size());
-        return true;
     }
 
     @Override
@@ -41,7 +46,6 @@ public class TriviaGame implements IGame {
                 isGettingOutOfPenaltyBox = false;
                 return;
             }
-
         }
 
         currentPlayer().rollPosition(roll, TOTAL_NUMBER_OF_POSITIONS);

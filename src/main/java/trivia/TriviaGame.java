@@ -9,61 +9,62 @@ public class TriviaGame implements IGame {
     private static final int MAX_PLAYERS = 4;
     private static final int TO_WIN = 6;
 
-    private final Questions questions;
-    private final List<Player> players;
+    private final Questions questions = new Questions();
+    private final List<Player> players = new ArrayList<>();
+
+    private Player currentPlayer;
 
     private boolean isReleasableDie;
 
-    private int currentPlayerIndex;
-
-    public TriviaGame() {
-        questions = new Questions();
-        players = new ArrayList<>();
-    }
 
     @Override
     public void enrollPlayer(String name) {
         if (players.size() == MAX_PLAYERS) {
             throw new IllegalStateException("The maximum allowed number of players is " + MAX_PLAYERS + ".");
         }
-
         players.add(new Player(name));
         System.out.println(name + " was added");
         System.out.println("He / She is player number " + players.size());
+
+        if (currentPlayer == null) {
+            currentPlayer = players.get(0);
+        }
     }
 
     @Override
     public void playTurn(int die) {
-        Player player = currentPlayer();
+        if (players.isEmpty()) {
+            throw new IllegalStateException("No players have enrolled yet.");
+        }
 
-        System.out.println(player.getName() + " is the current player");
+        System.out.println(currentPlayer.getName() + " is the current player");
         System.out.println("He / She has rolled a " + die);
 
-        if (player.isInPenaltyBox()) {
+        if (currentPlayer.isInPenaltyBox()) {
             isReleasableDie = isReleasable(die);
             if (isReleasableDie) {
-                System.out.println(player.getName() + " is getting out of the penalty box");
+                System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
             } else {
-                System.out.println(player.getName() + " is not getting out of the penalty box");
+                System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
                 return;
             }
         }
 
-        player.move(die, BOARD_SPOTS);
+        currentPlayer.move(die, BOARD_SPOTS);
         question();
     }
 
-    private static boolean isReleasable(int die) {
+    private boolean isReleasable(int die) {
         return die % 2 != 0;
     }
 
     private void question() {
-        System.out.println(questions.popQuestion(Category.atIndex(currentPlayer().getPosition())));
+        System.out.println(questions.popQuestion(Category.atIndex(currentPlayer.getPosition())));
     }
 
     @Override
     public boolean onCorrectAnswer() {
-        if (currentPlayer().isInPenaltyBox()) {
+        if (currentPlayer.isInPenaltyBox()) {
             if (isReleasableDie) {
                 return answerWasCorrect();
             } else {
@@ -76,35 +77,29 @@ public class TriviaGame implements IGame {
     }
 
     private boolean answerWasCorrect() {
-        Player player = currentPlayer();
-
         System.out.println("Answer was correct!!!!");
-        player.collectCoin();
-        System.out.println(player.getName() + " now has " + player.getCoins() + " Gold Coins.");
+        currentPlayer.collectCoin();
 
+        Player player = currentPlayer;
         nextPlayer();
         return !player.ownsCoins(TO_WIN);
     }
 
     @Override
     public boolean onWrongAnswer() {
-        Player player = currentPlayer();
         System.out.println("Question was incorrectly answered");
-        System.out.println(player.getName() + " was sent to the penalty box");
-        player.setInPenaltyBox(true);
+        System.out.println(currentPlayer.getName() + " was sent to the penalty box");
+        currentPlayer.setInPenaltyBox(true);
 
         nextPlayer();
         return true;
     }
 
-    private Player currentPlayer() {
-        return players.get(currentPlayerIndex);
-    }
-
     private void nextPlayer() {
-        currentPlayerIndex++;
-        if (currentPlayerIndex == players.size()) {
-            currentPlayerIndex = 0;
+        int index = players.indexOf(currentPlayer) + 1;
+        if (index == players.size()) {
+            index = 0;
         }
+        currentPlayer = players.get(index);
     }
 }

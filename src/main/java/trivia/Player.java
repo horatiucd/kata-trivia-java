@@ -29,7 +29,6 @@ public class Player {
         }
 
         System.out.println(name + "'s new location is " + position);
-        System.out.println("The category is " + Category.atIndex(position));
     }
 
     public void collectCoin() {

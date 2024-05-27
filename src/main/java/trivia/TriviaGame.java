@@ -59,7 +59,9 @@ public class TriviaGame implements IGame {
     }
 
     private void question() {
-        System.out.println(questions.popQuestion(Category.atIndex(currentPlayer.getPosition())));
+        Category category = Category.atIndex(currentPlayer.getPosition());
+        System.out.println("The category is " + category);
+        System.out.println(questions.popQuestion(category));
     }
 
     @Override

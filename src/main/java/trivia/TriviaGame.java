@@ -79,9 +79,11 @@ public class TriviaGame implements IGame {
         System.out.println("Answer was correct!!!!");
         currentPlayer.collectCoin();
 
-        Player player = currentPlayer;
+        if (currentPlayer.ownsCoins(TO_WIN)) {
+            return false;
+        }
         nextPlayer();
-        return !player.ownsCoins(TO_WIN);
+        return true;
     }
 
     @Override

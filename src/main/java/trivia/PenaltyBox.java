@@ -15,7 +15,7 @@ public final class PenaltyBox {
         players.remove(player);
     }
 
-    public boolean contains(Player player) {
+    public boolean has(Player player) {
         return players.contains(player);
     }
 

@@ -40,7 +40,7 @@ public class TriviaGame implements IGame {
         System.out.println(currentPlayer.name() + " is the current player");
         System.out.println("He / She has rolled a " + die);
 
-        if (penaltyBox.contains(currentPlayer)) {
+        if (penaltyBox.has(currentPlayer)) {
             if (!penaltyBox.isRelease(die)) {
                 System.out.println(currentPlayer.name() + " is not getting out of the penalty box");
                 return;

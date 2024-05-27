@@ -28,22 +28,24 @@ public class TriviaGame implements IGame {
 
     @Override
     public void movePlayer(int positions) {
-        System.out.println(currentPlayer().getName() + " is the current player");
+        Player player = currentPlayer();
+
+        System.out.println(player.getName() + " is the current player");
         System.out.println("He / She has rolled a " + positions);
 
-        if (currentPlayer().isInPenaltyBox()) {
+        if (player.isInPenaltyBox()) {
             if (positions % 2 != 0) {
-                System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
+                System.out.println(player.getName() + " is getting out of the penalty box");
                 isGettingOutOfPenaltyBox = true;
             } else {
-                System.out.println(currentPlayer().getName() + " is not getting out of the penalty box");
+                System.out.println(player.getName() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
                 return;
             }
         }
 
-        currentPlayer().move(positions, TOTAL_NUMBER_OF_POSITIONS);
-        showStatusOfCurrentPlayer();
+        player.move(positions, TOTAL_NUMBER_OF_POSITIONS);
+        player.showStatus();
         askQuestion();
     }
 
@@ -63,17 +65,13 @@ public class TriviaGame implements IGame {
 
     @Override
     public boolean wrongAnswer() {
+        Player player = currentPlayer();
         System.out.println("Question was incorrectly answered");
-        System.out.println(currentPlayer().getName() + " was sent to the penalty box");
-        currentPlayer().setInPenaltyBox(true);
+        System.out.println(player.getName() + " was sent to the penalty box");
+        player.setInPenaltyBox(true);
 
         nextPlayer();
         return true;
-    }
-
-    private void showStatusOfCurrentPlayer() {
-        System.out.println(currentPlayer().getName() + "'s new location is " + currentPlayer().getPosition());
-        System.out.println("The category is " + Category.atIndex(currentPlayer().getPosition()));
     }
 
     private void askQuestion() {
@@ -92,11 +90,13 @@ public class TriviaGame implements IGame {
     }
 
     private boolean correctAnswer() {
-        System.out.println("Answer was correct!!!!");
-        currentPlayer().collectCoin();
-        System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getCoins() + " Gold Coins.");
+        Player player = currentPlayer();
 
-        boolean winner = currentPlayer().getCoins() != 6;
+        System.out.println("Answer was correct!!!!");
+        player.collectCoin();
+        System.out.println(player.getName() + " now has " + player.getCoins() + " Gold Coins.");
+
+        boolean winner = player.getCoins() != 6;
         nextPlayer();
         return winner;
     }

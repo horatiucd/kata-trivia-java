@@ -42,4 +42,9 @@ public class Player {
     public void setInPenaltyBox(boolean inPenaltyBox) {
         this.inPenaltyBox = inPenaltyBox;
     }
+
+    public void showStatus() {
+        System.out.println(name + "'s new location is " + position);
+        System.out.println("The category is " + Category.atIndex(position));
+    }
 }

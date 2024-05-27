@@ -6,7 +6,6 @@ import java.util.List;
 public class TriviaGame implements IGame {
 
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
-    private static final int NUMBER_OF_CATEGORIES = 4;
 
     private final List<Player> players = new ArrayList<>();
     private final Questions questions = new Questions();
@@ -78,11 +77,11 @@ public class TriviaGame implements IGame {
         System.out.println(currentPlayer().getName()
                 + "'s new location is "
                 + currentPlayer().getPosition());
-        System.out.println("The category is " + currentCategory());
+        System.out.println("The category is " + Category.atIndex(currentPlayer().getPosition()));
     }
 
     private void askQuestion() {
-        System.out.println(questions.popQuestion(currentCategory()));
+        System.out.println(questions.popQuestion(Category.atIndex(currentPlayer().getPosition())));
     }
 
     private Player currentPlayer() {
@@ -94,10 +93,6 @@ public class TriviaGame implements IGame {
         if (currentPlayerIndex == players.size()) {
             currentPlayerIndex = 0;
         }
-    }
-
-    private Category currentCategory() {
-        return Category.values()[currentPlayer().getPosition() % NUMBER_OF_CATEGORIES];
     }
 
     private boolean correctAnswer() {

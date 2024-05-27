@@ -11,9 +11,10 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 
 public class GameTest {
+
 	@Test
-	public void caracterizationTest() {
-		// runs 10.000 "random" games to see the output of old and new code mathces
+	public void characterizationTest() {
+		// runs 10.000 "random" games to see the output of the old and new code matches
 		for (int seed = 1; seed < 10_000; seed++) {
 			testSeed(seed, false);
 		}
@@ -29,6 +30,7 @@ public class GameTest {
 						 ". To breakpoint through it, run this seed alone using the (ignored) test below",
 			expectedOutput, actualOutput);
 	}
+	
 	@Test
 	@Ignore("enable back and set a particular seed to see the output")
 	public void oneSeed() {
@@ -46,7 +48,7 @@ public class GameTest {
 			aGame.add("Pat");
 			aGame.add("Sue");
 
-			boolean notAWinner = false;
+			boolean notAWinner;
 			do {
 				aGame.roll(rand.nextInt(5) + 1);
 
@@ -61,6 +63,6 @@ public class GameTest {
 			System.setOut(old);
 		}
 
-		return new String(baos.toByteArray());
+		return baos.toString();
 	}
 }

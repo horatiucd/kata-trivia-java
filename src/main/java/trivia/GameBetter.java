@@ -3,8 +3,9 @@ package trivia;
 import java.util.ArrayList;
 import java.util.List;
 
-// REFACTORED
+// TODO: Ultimately, change it to TriviaGame
 public class GameBetter implements IGame {
+
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
     private static final int NUMBER_OF_CATEGORIES = 4;
 
@@ -32,7 +33,6 @@ public class GameBetter implements IGame {
         return true;
     }
 
-
     public int howManyPlayers() {
         return players.size();
     }
@@ -46,10 +46,10 @@ public class GameBetter implements IGame {
                 isGettingOutOfPenaltyBox = true;
 
                 System.out.println(currentPlayer().getName() + " is getting out of the " +
-                                   "penalty box");
+                        "penalty box");
             } else {
                 System.out.println(currentPlayer().getName() + " is not " +
-                                   "getting out of the penalty box");
+                        "getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
                 return;
             }
@@ -63,8 +63,8 @@ public class GameBetter implements IGame {
 
     private void showStatusOfCurrentPlayer() {
         System.out.println(currentPlayer().getName()
-                           + "'s new location is "
-                           + currentPlayer().getPosition());
+                + "'s new location is "
+                + currentPlayer().getPosition());
         System.out.println("The category is " + currentCategory());
     }
 
@@ -80,38 +80,27 @@ public class GameBetter implements IGame {
     public boolean wasCorrectlyAnswered() {
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
-                System.out.println("Answer was correct!!!!");
-                currentPlayer().addCoin();
-                System.out.println(currentPlayer().getName()
-                                   + " now has "
-                                   + currentPlayer().getCoins()
-                                   + " Gold Coins.");
-
-                boolean winner = didPlayerWin();
-                nextPlayer();
-
-                return winner;
+                return correctAnswer();
             } else {
                 nextPlayer();
                 return true;
             }
-
-
         } else {
-
-            System.out.println("Answer was correct!!!!");
-            currentPlayer().addCoin();
-            System.out.println(currentPlayer().getName()
-                               + " now has "
-                               + currentPlayer().getCoins()
-                               + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-
-            nextPlayer();
-
-            return winner;
+            return correctAnswer();
         }
+    }
+
+    private boolean correctAnswer() {
+        System.out.println("Answer was correct!!!!");
+        currentPlayer().addCoin();
+        System.out.println(currentPlayer().getName()
+                + " now has "
+                + currentPlayer().getCoins()
+                + " Gold Coins.");
+
+        boolean winner = currentPlayer().getCoins() != 6;
+        nextPlayer();
+        return winner;
     }
 
     public boolean wrongAnswer() {
@@ -126,10 +115,5 @@ public class GameBetter implements IGame {
     public void nextPlayer() {
         currentPlayerIndex++;
         if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
-    }
-
-
-    private boolean didPlayerWin() {
-        return currentPlayer().getCoins() != 6;
     }
 }

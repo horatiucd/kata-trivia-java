@@ -13,9 +13,7 @@ public class TriviaGame implements IGame {
     private final List<Player> players = new ArrayList<>();
 
     private Player currentPlayer;
-
-    private boolean isReleasableDie;
-
+    private int currentDie;
 
     @Override
     public void enrollPlayer(String name) {
@@ -37,29 +35,29 @@ public class TriviaGame implements IGame {
             throw new IllegalStateException("No players have enrolled yet.");
         }
 
+        currentDie = die;
+
         System.out.println(currentPlayer.getName() + " is the current player");
-        System.out.println("He / She has rolled a " + die);
+        System.out.println("He / She has rolled a " + currentDie);
 
         if (currentPlayer.isInPenaltyBox()) {
-            isReleasableDie = isReleasable(die);
-            if (isReleasableDie) {
-                System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
-            } else {
+            if (!isReleaseDie()) {
                 System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
                 return;
             }
+            System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
         }
 
-        currentPlayer.move(die, BOARD_SPOTS);
+        currentPlayer.move(currentDie, BOARD_SPOTS);
         question();
     }
 
-    private boolean isReleasable(int die) {
-        return die % 2 != 0;
+    private boolean isReleaseDie() {
+        return currentDie % 2 != 0;
     }
 
     private void question() {
-        Category category = Category.atIndex(currentPlayer.getPosition());
+        Category category = Category.withIndex(currentPlayer.getPosition());
         System.out.println("The category is " + category);
         System.out.println(questions.popQuestion(category));
     }
@@ -67,15 +65,14 @@ public class TriviaGame implements IGame {
     @Override
     public boolean onCorrectAnswer() {
         if (currentPlayer.isInPenaltyBox()) {
-            if (isReleasableDie) {
+            if (isReleaseDie()) {
                 return answerWasCorrect();
             } else {
                 nextPlayer();
                 return true;
             }
-        } else {
-            return answerWasCorrect();
         }
+        return answerWasCorrect();
     }
 
     private boolean answerWasCorrect() {
@@ -103,5 +100,6 @@ public class TriviaGame implements IGame {
             index = 0;
         }
         currentPlayer = players.get(index);
+        currentDie = 0;
     }
 }

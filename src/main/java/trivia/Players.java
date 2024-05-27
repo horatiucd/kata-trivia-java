@@ -1,16 +1,14 @@
 package trivia;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class Players {
 
     private final int maxPlayers;
     private final int coinsToWin;
 
-    private final Map<Player, Integer> standings;
+    private final List<Player> playing;
 
     private Player currentPlayer;
 
@@ -18,23 +16,23 @@ public final class Players {
         this.maxPlayers = maxPlayers;
         this.coinsToWin = coinsToWin;
 
-        standings = new LinkedHashMap<>();
+        playing = new ArrayList<>();
     }
 
     public boolean isEmpty() {
-        return standings.isEmpty();
+        return playing.isEmpty();
     }
 
     public int add(Player player) {
-        if (standings.size() == maxPlayers) {
+        if (playing.size() == maxPlayers) {
             throw new IllegalStateException("At most " + maxPlayers + " can play.");
         }
-        standings.put(player, 0);
+        playing.add(player);
 
         if (currentPlayer == null) {
             currentPlayer = player;
         }
-        return standings.size();
+        return playing.size();
     }
 
     public Player currentPlayer() {
@@ -45,12 +43,11 @@ public final class Players {
     }
 
     public void nextPlayer() {
-        List<Player> players = new ArrayList<>(standings.keySet());
-        int index = players.indexOf(currentPlayer) + 1;
-        if (index == players.size()) {
+        int index = playing.indexOf(currentPlayer) + 1;
+        if (index == playing.size()) {
             index = 0;
         }
-        currentPlayer = players.get(index);
+        currentPlayer = playing.get(index);
     }
 
     public boolean hasWinner() {

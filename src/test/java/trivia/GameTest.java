@@ -37,6 +37,7 @@ public class GameTest {
 	}
 
 	private String extractOutput(Random rand, IGame aGame) {
+		PrintStream old = System.out;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try (PrintStream inMemory = new PrintStream(baos)) {
 			// WARNING: System.out.println() doesn't work in this try {} as the system out is captured and recorded in memory
@@ -58,7 +59,7 @@ public class GameTest {
 
 			} while (notAWinner);
 		} finally {
-			System.setOut(System.out);
+			System.setOut(old);
 		}
 
 		return baos.toString();

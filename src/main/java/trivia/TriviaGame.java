@@ -5,6 +5,7 @@ import java.util.List;
 
 public class TriviaGame implements IGame {
 
+    private static final int TO_WIN = 6;
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
 
     private final Questions questions;
@@ -96,8 +97,7 @@ public class TriviaGame implements IGame {
         player.collectCoin();
         System.out.println(player.getName() + " now has " + player.getCoins() + " Gold Coins.");
 
-        boolean winner = player.getCoins() != 6;
         nextPlayer();
-        return winner;
+        return !player.ownsCoins(TO_WIN);
     }
 }

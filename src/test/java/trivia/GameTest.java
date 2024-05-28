@@ -20,7 +20,7 @@ public class GameTest {
 	}
 
 	private void testSeed(int seed, boolean printExpected) {
-		String expectedOutput = extractOutput(new Random(seed), new Game());
+		String expectedOutput = extractOutput(new Random(seed), new InitialTriviaGame());
 		if (printExpected) {
 			System.out.println(expectedOutput);
 		}
@@ -36,7 +36,7 @@ public class GameTest {
 		testSeed(1, true);
 	}
 
-	private String extractOutput(Random rand, IGame aGame) {
+	private String extractOutput(Random rand, Game aGame) {
 		PrintStream old = System.out;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try (PrintStream inMemory = new PrintStream(baos)) {

@@ -1,6 +1,6 @@
 package trivia;
 
-public class TriviaGame implements IGame {
+public class TriviaGame implements Game {
 
     private static final int MAX_PLAYERS = 4;
     private static final int COINS_TO_WIN_THE_GAME = 6;

@@ -21,10 +21,10 @@ public final class Player {
         return position;
     }
 
-    public void move(int sports, int maxSpots) {
-        position += sports;
-        if (position > maxSpots - 1) {
-            position -= maxSpots;
+    public void move(int tiles, int maxTiles) {
+        position += tiles;
+        if (position > maxTiles - 1) {
+            position -= maxTiles;
         }
     }
 
